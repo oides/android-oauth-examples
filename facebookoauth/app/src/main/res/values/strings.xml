@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">facebook-oauth</string>
+    <string name="app_name">Facebook Oauth</string>
     <string name="facebook_app_id">1118968388244062</string>
     <string name="fb_login_protocol_scheme">fb1118968388244062</string>
 </resources>
