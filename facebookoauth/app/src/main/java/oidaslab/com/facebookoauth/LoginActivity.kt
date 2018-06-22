@@ -9,6 +9,12 @@ import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
 import oidaslab.com.facebookoauth.util.LoggedUser
+import android.R.attr.data
+import android.graphics.BitmapFactory
+import android.graphics.Bitmap
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
+import java.net.URL
 
 
 class LoginActivity : AppCompatActivity() {
@@ -82,14 +88,20 @@ class LoginActivity : AppCompatActivity() {
                     LoggedUser.name = response.jsonObject.getString("name")
                     LoggedUser.email = response.jsonObject.getString("email")
 
-                    val intent = Intent(this@LoginActivity, LoggedInUserActivity::class.java)
-                    startActivity(intent)
+                    val profilePicUrl = URL(response.jsonObject.getJSONObject("picture").getJSONObject("data").getString("url"))
+                    doAsync {
+                        LoggedUser.picture = BitmapFactory.decodeStream(profilePicUrl.openConnection().getInputStream())
+
+                        val intent = Intent(this@LoginActivity, LoggedInUserActivity::class.java)
+                        startActivity(intent)
+                    }
                 }
         )
 
         val parameters = Bundle()
-        parameters.putString("fields", "id,cover,email,name")
+        parameters.putString("fields", "id,cover,email,name,picture.height(500).width(500)")
         request.parameters = parameters
         request.executeAsync()
     }
+
 }

@@ -7,6 +7,7 @@ import android.util.Log
 import com.facebook.AccessToken
 import com.facebook.AccessTokenTracker
 import kotlinx.android.synthetic.main.logged_in_user_activity.*
+import kotlinx.android.synthetic.main.logged_in_user_activity.view.*
 import oidaslab.com.facebookoauth.util.LoggedUser
 
 class LoggedInUserActivity : AppCompatActivity() {
@@ -37,6 +38,7 @@ class LoggedInUserActivity : AppCompatActivity() {
 
         nameLoggedUser.text = LoggedUser.name
         emailLoggedUser.text = LoggedUser.email
+        pictureLoggedUser.setImageBitmap(LoggedUser.picture)
     }
 
     public override fun onDestroy() {
