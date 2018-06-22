@@ -6,7 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import com.facebook.AccessToken
 import com.facebook.AccessTokenTracker
-
+import kotlinx.android.synthetic.main.logged_in_user_activity.*
+import oidaslab.com.facebookoauth.util.LoggedUser
 
 class LoggedInUserActivity : AppCompatActivity() {
 
@@ -34,16 +35,8 @@ class LoggedInUserActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.logged_in_user_activity)
 
-        val accessToken = AccessToken.getCurrentAccessToken()
-        val isLoggedIn = accessToken != null && !accessToken.isExpired
-
-        if (isLoggedIn) {
-            Log.d(LoggedInUserActivity.TAG, "Usuário já logado...")
-        } else {
-            Log.d(LoggedInUserActivity.TAG, "Nenhum usuário logado...")
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-        }
+        nameLoggedUser.text = LoggedUser.name
+        emailLoggedUser.text = LoggedUser.email
     }
 
     public override fun onDestroy() {
