@@ -9,11 +9,8 @@ import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
 import oidaslab.com.facebookoauth.util.LoggedUser
-import android.R.attr.data
 import android.graphics.BitmapFactory
-import android.graphics.Bitmap
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
 import java.net.URL
 
 
@@ -76,14 +73,14 @@ class LoginActivity : AppCompatActivity() {
                         Log.d(TAG, "Erro ao realizar login...")
                     }
                 }
-        );
+        )
     }
 
     private fun setFacebookData(accessToken: AccessToken) {
         val request = GraphRequest.newMeRequest(
                 accessToken,
                 GraphRequest.GraphJSONObjectCallback { jsonObject, response ->
-                    Log.d(LoginActivity.TAG, "Response: $response.toString()")
+                    Log.d(TAG, "Response: $response.toString()")
 
                     LoggedUser.name = response.jsonObject.getString("name")
                     LoggedUser.email = response.jsonObject.getString("email")
@@ -91,6 +88,7 @@ class LoginActivity : AppCompatActivity() {
                     val profilePicUrl = URL(response.jsonObject.getJSONObject("picture").getJSONObject("data").getString("url"))
                     doAsync {
                         LoggedUser.picture = BitmapFactory.decodeStream(profilePicUrl.openConnection().getInputStream())
+                        LoggedUser.userDataLoaded = true
 
                         val intent = Intent(this@LoginActivity, LoggedInUserActivity::class.java)
                         startActivity(intent)
